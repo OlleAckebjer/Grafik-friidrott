@@ -1,0 +1,2 @@
+Här har jag egentligen bara fixat så att rullande
+tiden startar när man laddar om sidan

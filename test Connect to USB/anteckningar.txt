@@ -1,0 +1,1 @@
+Försöker läsa av data från usb port, men har inte lyckats alls än

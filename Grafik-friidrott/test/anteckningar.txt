@@ -1,0 +1,3 @@
+Här har jag skapat funktionen som kommer att funka med grafiken
+Just nu är det bara att ena sidan trycker på en knapp och sen ändras färgen
+på display skärmen

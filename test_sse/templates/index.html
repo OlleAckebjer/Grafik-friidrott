@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Server-Sent Events Example</title>
+</head>
+<body>
+  <h1>Data from Server:</h1>
+  <div id="data-container"></div>
+
+  <script>
+    // Create an EventSource object to establish the SSE connection
+    var source = new EventSource('/stream');
+
+    // Listen for the 'data_event' event
+    source.addEventListener('data_event', function(event) {
+      // Handle the received data
+      var data = event.data;
+
+      // Update the UI
+      var dataContainer = document.getElementById('data-container');
+      dataContainer.innerHTML = data;
+    });
+  </script>
+</body>
+</html>
