@@ -3,8 +3,11 @@ import usb.util
 
 # Find the USB device
 
-vendor_id=""
-product_id=""
+vendor_id=1532
+product_id="005C"
+
+#\VID_1532&PID_005C&MI_00\7&79a61ef&0&0000
+
 
 def read_data():
     device = usb.core.find(idVendor=vendor_id, idProduct=product_id)
@@ -34,4 +37,4 @@ def find_usb_data():
         # Print the VID and PID
         print(f"Device: VID={vid}, PID={pid}")
 
-find_usb_data()
+read_data()
