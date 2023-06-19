@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control</title>
+    <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
+        integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
+        crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+    <div>
+        <button onclick="send_color('blue')">Blå</button>
+        <button onclick="send_color('green')">Grön</button>
+        <button onclick="send_color('red')">Röd</button>
+    </div>
+
+    <script>
+        const socket = io();
+
+        function send_color(color) {
+            socket.emit("send_color", color);
+        }
+
+
+    </script>
+</body>
+
+</html>
