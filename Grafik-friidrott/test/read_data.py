@@ -1,4 +1,4 @@
-from flask_socketio import emit
+""" from flask_socketio import emit
 import random
 import time
 
@@ -160,3 +160,4 @@ def read():
 
 
         time.sleep(4)
+ """

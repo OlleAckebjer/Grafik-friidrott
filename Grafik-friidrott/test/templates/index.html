@@ -9,21 +9,137 @@
     <script src="https://cdn.socket.io/4.6.0/socket.io.min.js"
         integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+"
         crossorigin="anonymous"></script>
+   
+        <!-- BOOTSTRAP -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+   
+   
+    <!-- AJAX -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
 
 </head>
 
-<body>
-    <div>
-        <button onclick="send_color('blue')">Blå</button>
+<body onload="get_aktiva()">
+    <div class="container">
+<!--         <button onclick="send_color('blue')">Blå</button>
         <button onclick="send_color('green')">Grön</button>
         <button onclick="send_color('red')">Röd</button>
+        <input id="text" type="text">
+        <button onclick="send_results()">Skicka text</button>
+
+        <br>
+        <p>Tidsprogram</p> -->
+        <br>
+        <h1>Admin Grafik</h1>
+        <h3>Välj gren</h3>
+        <select id="gren" onchange="get_aktiva()">
+            <option>Kvinnor Stav A</option>
+            <option>Män Stav A</option>
+        </select>
+
+        <br>
+        <br>
+        <div>
+            <button onclick="show_startlista()" class="btn btn-primary">Startlista</button>
+            <button onclick="show_results()" class="btn btn-primary">Resultat</button>
+        </div>
+        <br>
+        <br>
+        <div>
+            <h3>Välj aktiv</h3>
+            <!-- HÄMTA ALLA AKTIVA -->
+            <select id="aktiv" class="form-select">
+            </select>
+            <br>
+            <br>
+            <button onclick="show_namnskylt()" class="btn btn-primary">Namnskylt</button>
+            <button onclick="show_enskild_resultat()" class="btn btn-primary">Resultat</button>
+        </div>
+        <!-- <div>
+            <p>Förhandsvisning</p>
+            <fieldset>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Excepturi aut eveniet placeat, laborum
+                    corporis at doloribus aliquid! Quaerat excepturi natus quasi labore error nobis, velit ipsam
+                    perspiciatis obcaecati, omnis laboriosam?</p>
+            </fieldset>
+        </div>
+        <button>Visa Live</button> -->
+
     </div>
 
     <script>
+        function get_aktiva() {
+            gren = document.getElementById("gren").value;
+            console.log(gren);
+            // AJAX
+            $.ajax({
+                url: "/get_aktiva", //the page containing python script
+                type: "POST", //request type,
+                contentType: "application/json",
+                data: JSON.stringify(gren),
+                success: function (d) {
+                    console.log(d)
+                    if (d != null) {
+                        aktiva = d[0];
+                        aktiva_id = d[1];
+                        document.getElementById("aktiv").innerHTML = "";
+
+
+
+                        for (let i = 0; i < aktiva.length; i++) {
+                            option = document.createElement("option");
+                            option.innerHTML = aktiva[i];
+                            option.value = aktiva_id[i];
+                            document.getElementById("aktiv").appendChild(option);
+                        }
+
+                    }
+                }
+            })
+
+            /* aktiva = ["1", "2", "3", "4", "5"];
+            aktiva_id = ["1", "2", "3", "4", "5"]; */
+
+
+
+        }
+
         const socket = io();
 
-        function send_color(color) {
+
+
+        /* function send_color(color) {
             socket.emit("send_color", color);
+        }
+
+        function send_results() {
+            const id = document.getElementById("text").value;
+            socket.emit("send_results", id);
+        } */
+
+        function show_startlista() {
+            gren = document.getElementById("gren").value;
+
+            socket.emit("show_startlista", gren);
+        }
+
+        function show_results() {
+            gren = document.getElementById("gren").value;
+            socket.emit("show_results", gren);
+        }
+
+        function show_namnskylt() {
+            gren = document.getElementById("gren").value;
+            aktiv = document.getElementById("aktiv").value;
+            socket.emit("show_namnskylt", gren, aktiv);
+        }
+
+        function show_enskild_resultat() {
+            gren = document.getElementById("gren").value;
+            aktiv = document.getElementById("aktiv").value;
+            socket.emit("show_enskild_resultat", gren, aktiv);
         }
 
 
