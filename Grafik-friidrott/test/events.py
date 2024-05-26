@@ -18,14 +18,14 @@ def handle_change_text(text):
 
 @socketio.on("show_startlista")
 def handle_show_startlista(gren):
-    print(gren)
+    
+    
     if gren == "Kvinnor Stav A":
-        gren_id = 165623
+        gren_id = 201734 
     elif gren == "Män Stav A":
-        gren_id = 165626
-        
-    print(gren_id)
-    comp_id = 24406
+        gren_id = 201736 
+    
+    comp_id = 25050 
     url = f"https://api.admin.rosterathletics.com/api/admin/meeting/{comp_id}/export-event/{gren_id}"
     
     
@@ -42,6 +42,11 @@ def handle_show_startlista(gren):
     # Convert the CSV data into a list of lists
     data = list(csv_reader)
 
+    print(data[0])
+    print(data[1])
+    print(len(data))
+
+
     name_index = data[0].index("FullName")
     """ pb_index = data[0].index("PersonalBest")
     sb_index = data[0].index("SeasonBest") """
@@ -50,7 +55,7 @@ def handle_show_startlista(gren):
 
 
 
-
+    event_id_index = data[0].index("EventGroup")
     
     name = []
     """ pb = []
@@ -59,7 +64,7 @@ def handle_show_startlista(gren):
     ordning = []
     x=1    
     for row in data[1:]:
-        if row[status_index] != "DNS":
+        if row[status_index] != "DNS" and row[event_id_index] == "1":
             name.append(row[name_index])
             """ pb.append(row[pb_index])
             sb.append(row[sb_index]) """
@@ -69,7 +74,6 @@ def handle_show_startlista(gren):
 
     startlista = [ordning, name, klubb]
     
-    print(startlista)
 
     emit("change_startlista", [startlista, gren], broadcast=True)
 
@@ -77,12 +81,11 @@ def handle_show_startlista(gren):
 @socketio.on("show_results")
 def handle_show_results(gren):
     if gren == "Kvinnor Stav A":
-        gren_id = 165623
+        gren_id = 201734 
     elif gren == "Män Stav A":
-        gren_id = 165626
-
-    print(gren_id)
-    comp_id = 24406
+        gren_id = 201736 
+    
+    comp_id = 25050 
     url = f"https://api.admin.rosterathletics.com/api/admin/meeting/{comp_id}/export-event/{gren_id}"
     
     
@@ -103,7 +106,7 @@ def handle_show_results(gren):
     klubb_index = data[0].index("ShortClubName")
     results_index = data[0].index("Result")
     position_index = data[0].index("PositionHeat")
-
+    event_id_index = data[0].index("EventGroup")
 
     position = []
     name = []
@@ -111,10 +114,11 @@ def handle_show_results(gren):
     klubb = []
     
     for row in data[1:]:
-        name.append(row[name_index])
-        results.append(row[results_index])
-        klubb.append(row[klubb_index])
-        position.append(row[position_index])
+        if row[event_id_index] == "1":
+            name.append(row[name_index])
+            results.append(row[results_index])
+            klubb.append(row[klubb_index])
+            position.append(row[position_index])
 
     results_lista = [position, name, klubb, results]
 
@@ -125,15 +129,12 @@ def handle_show_results(gren):
 
 @socketio.on("show_namnskylt")
 def handle_show_namnskylt(gren, aktiv):
-    print(gren, aktiv)
-
     if gren == "Kvinnor Stav A":
-        gren_id = 165623
+        gren_id = 201734 
     elif gren == "Män Stav A":
-        gren_id = 165626
-        
-    print(gren_id)
-    comp_id = 24406
+        gren_id = 201736 
+    
+    comp_id = 25050 
     url = f"https://api.admin.rosterathletics.com/api/admin/meeting/{comp_id}/export-event/{gren_id}"
     
     
@@ -182,15 +183,12 @@ def handle_show_namnskylt(gren, aktiv):
 
 @socketio.on("show_enskild_resultat")
 def handle_show_enskild_resultat(gren, aktiv):
-    print(gren, aktiv)
-
     if gren == "Kvinnor Stav A":
-        gren_id = 165623
+        gren_id = 201734 
     elif gren == "Män Stav A":
-        gren_id = 165626
-        
-    print(gren_id)
-    comp_id = 24406
+        gren_id = 201736 
+    
+    comp_id = 25050 
     url = f"https://api.admin.rosterathletics.com/api/admin/meeting/{comp_id}/export-event/{gren_id}"
     
     
@@ -497,3 +495,5 @@ def handle_new_message(message):
         if users[user] == request.sid:
             username = user
     emit("chat", {"message": message, "username": username}, broadcast=True) '''
+
+

@@ -16,12 +16,11 @@ def get_aktiva():
     data = request.get_json()
     print(data)
     if data == "Kvinnor Stav A":
-        gren_id = 165623
+        gren_id = 201734 
     elif data == "Män Stav A":
-        gren_id = 165626
+        gren_id = 201736 
     
-    comp_id = 24406
-
+    comp_id = 25050 
     url = f"https://api.admin.rosterathletics.com/api/admin/meeting/{comp_id}/export-event/{gren_id}"
 
     data_response = session.get(url)
@@ -35,15 +34,21 @@ def get_aktiva():
 
     # Convert the CSV data into a list of lists
     data = list(csv_reader)
-
+    
+    print(data)
+    
     name_index = data[0].index("FullName")
     id_index = data[0].index("EntryId")
+    event_id_index = data[0].index("EventGroup")
+
+
 
     aktiva = []
     aktiva_id = []
     for row in data[1:]:
-        aktiva.append(row[name_index])
-        aktiva_id.append(row[id_index])
+        if row[event_id_index] == "1":
+            aktiva.append(row[name_index])
+            aktiva_id.append(row[id_index])
 
     return jsonify(aktiva, aktiva_id)
 
